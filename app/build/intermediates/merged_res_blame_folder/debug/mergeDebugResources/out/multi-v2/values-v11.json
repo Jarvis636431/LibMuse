@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.choosemuse.example.libmuse.app-mergeDebugResources-18:/values-v11/values-v11.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\86151\\Desktop\\libmuse_android_7.2.1\\examples\\TestLibMuseAndroid\\app\\src\\main\\res\\values-v11\\styles.xml",
+                    "from": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "177",
+                        "endLines": "8",
+                        "endColumns": "12",
+                        "endOffsets": "309"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "138"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,114 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.choosemuse.example.libmuse"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+11-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:7:5-76
+11-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:7:22-73
+12    <uses-permission
+12-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:8:5-11:31
+13        android:name="android.permission.BLUETOOTH_SCAN"
+13-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:9:9-57
+14        android:usesPermissionFlags="neverForLocation" />
+14-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:10:9-55
+15    <uses-permission
+15-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:12:5-14:38
+16        android:name="android.permission.BLUETOOTH"
+16-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:13:9-52
+17        android:maxSdkVersion="30" />
+17-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:14:9-35
+18    <uses-permission
+18-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:15:5-17:38
+19        android:name="android.permission.BLUETOOTH_ADMIN"
+19-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:16:9-58
+20        android:maxSdkVersion="30" />
+20-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:17:9-35
+21    <uses-permission
+21-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:18:5-20:38
+22        android:name="android.permission.ACCESS_COARSE_LOCATION"
+22-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:19:9-65
+23        android:maxSdkVersion="30" />
+23-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:20:9-35
+24    <uses-permission
+24-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:21:5-23:38
+25        android:name="android.permission.ACCESS_FINE_LOCATION"
+25-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:22:9-63
+26        android:maxSdkVersion="30" />
+26-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:23:9-35
+27
+28    <permission
+28-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+29        android:name="com.choosemuse.example.libmuse.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+29-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+30        android:protectionLevel="signature" />
+30-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+31
+32    <uses-permission android:name="com.choosemuse.example.libmuse.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+32-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+32-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+33
+34    <application
+34-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:25:5-40:19
+35        android:allowBackup="true"
+35-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:26:9-35
+36        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+36-->[androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+37        android:debuggable="true"
+38        android:extractNativeLibs="false"
+39        android:icon="@drawable/ic_launcher"
+39-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:27:9-45
+40        android:label="@string/app_name"
+40-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:28:9-41
+41        android:testOnly="true"
+42        android:theme="@style/AppTheme" >
+42-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:29:9-40
+43        <activity
+43-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:30:9-39:20
+44            android:name="com.choosemuse.example.libmuse.MainActivity"
+44-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:31:13-71
+45            android:exported="true"
+45-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:33:13-36
+46            android:screenOrientation="portrait" >
+46-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:32:13-49
+47            <intent-filter>
+47-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:34:13-38:29
+48                <action android:name="android.intent.action.MAIN" />
+48-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:35:17-69
+48-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:35:25-66
+49
+50                <category android:name="android.intent.category.LAUNCHER" />
+50-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:37:17-77
+50-->C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:37:27-74
+51            </intent-filter>
+52        </activity>
+53
+54        <provider
+54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+55            android:name="androidx.startup.InitializationProvider"
+55-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+56            android:authorities="com.choosemuse.example.libmuse.androidx-startup"
+56-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+57            android:exported="false" >
+57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+58            <meta-data
+58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+59                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+60                android:value="androidx.startup" />
+60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+61            <meta-data
+61-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\86151\.gradle\caches\transforms-3\4165a0bba6107f1669a3484564b6cd6a\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+62                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+62-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\86151\.gradle\caches\transforms-3\4165a0bba6107f1669a3484564b6cd6a\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+63                android:value="androidx.startup" />
+63-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\86151\.gradle\caches\transforms-3\4165a0bba6107f1669a3484564b6cd6a\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+64        </provider>
+65    </application>
+66
+67</manifest>
