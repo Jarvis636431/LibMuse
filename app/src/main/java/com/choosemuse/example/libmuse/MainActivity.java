@@ -54,6 +54,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * This example will illustrate how to connect to a Muse headband,
  * register for and receive EEG data and disconnect from the headband.
@@ -211,6 +214,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         // Load and initialize our UI.
         initUI();
+        initRawFile();
 
         // Start up a thread for asynchronous file operations.
         // This is only needed if you want to do File I/O.
@@ -645,10 +649,37 @@ public class MainActivity extends Activity implements OnClickListener {
      * how to write all packet types generated from LibMuse.
      * @param p     The data packet to write.
      */
+
+    private void initRawFile() {
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir, "eeg_data.raw");
+        if (file.exists() && !file.delete()) {
+            Log.e(TAG, "file not successfully deleted");
+        }
+    }
+
     private void writeDataPacketToFile(final MuseDataPacket p) {
         Handler h = fileHandler.get();
         if (h != null) {
-            h.post(() -> fileWriter.get().addDataPacket(0, p));
+            h.post(() -> {
+                if (p.packetType() == MuseDataPacketType.EEG) {
+                    writeEegDataToRaw(p);
+                }
+            });
+        }
+    }
+
+    private void writeEegDataToRaw(MuseDataPacket p) {
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir, "eeg_data.raw");
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            for (int i = 0; i < p.valuesSize(); i++) {
+                fos.write(Double.toString(p.getEegChannelValue(Eeg.values()[i])).getBytes());
+                fos.write(" ".getBytes());
+            }
+            fos.write("\n".getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, "Error writing EEG data to raw file", e);
         }
     }
 
