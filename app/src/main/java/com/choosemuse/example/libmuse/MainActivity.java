@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         // Load and initialize our UI.
         initUI();
-        initRawFile();
+        initFifFile();
 
         // Start up a thread for asynchronous file operations.
         // This is only needed if you want to do File I/O.
@@ -650,9 +650,9 @@ public class MainActivity extends Activity implements OnClickListener {
      * @param p     The data packet to write.
      */
 
-    private void initRawFile() {
+    private void initFifFile() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(dir, "eeg_data.raw");
+        File file = new File(dir, "eeg_data.fif");
         if (file.exists() && !file.delete()) {
             Log.e(TAG, "file not successfully deleted");
         }
@@ -663,15 +663,15 @@ public class MainActivity extends Activity implements OnClickListener {
         if (h != null) {
             h.post(() -> {
                 if (p.packetType() == MuseDataPacketType.EEG) {
-                    writeEegDataToRaw(p);
+                    writeEegDataToFif(p);
                 }
             });
         }
     }
 
-    private void writeEegDataToRaw(MuseDataPacket p) {
+    private void writeEegDataToFif(MuseDataPacket p) {
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(dir, "eeg_data.raw");
+        File file = new File(dir, "eeg_data.fif");
         try (FileOutputStream fos = new FileOutputStream(file, true)) {
             for (int i = 0; i < p.valuesSize(); i++) {
                 fos.write(Double.toString(p.getEegChannelValue(Eeg.values()[i])).getBytes());
@@ -679,7 +679,7 @@ public class MainActivity extends Activity implements OnClickListener {
             }
             fos.write("\n".getBytes());
         } catch (IOException e) {
-            Log.e(TAG, "Error writing EEG data to raw file", e);
+            Log.e(TAG, "Error writing EEG data to FIF file", e);
         }
     }
 
