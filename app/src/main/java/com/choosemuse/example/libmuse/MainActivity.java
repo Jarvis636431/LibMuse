@@ -189,9 +189,26 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
     //计算FFT 使用JTransforms库
+    // 添加此方法以将经过 FFT 处理的 EEG 数据写入一个单独的 raw 文件
+    private void writeFftEegDataToRaw(double[] data) {
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir, "fft_eeg_data.raw");
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            for (double value : data) {
+                fos.write(Double.toString(value).getBytes());
+                fos.write(" ".getBytes());
+            }
+            fos.write("\n".getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, "Error writing FFT EEG data to raw file", e);
+        }
+    }
+
+    // 修改 performFFT 方法，在执行 FFT 后调用 writeFftEegDataToRaw
     private void performFFT(double[] data) {
         DoubleFFT_1D fft = new DoubleFFT_1D(data.length);
         fft.realForward(data);
+        writeFftEegDataToRaw(data); // 将经过 FFT 处理的数据写入文件
     }
 
 
