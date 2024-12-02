@@ -57,6 +57,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.jtransforms.fft.DoubleFFT_1D;
+
 /**
  * This example will illustrate how to connect to a Muse headband,
  * register for and receive EEG data and disconnect from the headband.
@@ -184,6 +186,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
     //--------------------------------------
     // Lifecycle / Connection code
+
+
+    //计算FFT 使用JTransforms库
+    private void performFFT(double[] data) {
+        DoubleFFT_1D fft = new DoubleFFT_1D(data.length);
+        fft.realForward(data);
+    }
 
 
     @Override
@@ -421,6 +430,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case EEG:
                 getEegChannelValues(eegBuffer,p);
                 eegStale = true;
+                performFFT(eegBuffer); // 调用 FFT 方法
                 break;
             case ACCELEROMETER:
                 getAccelValues(p);
