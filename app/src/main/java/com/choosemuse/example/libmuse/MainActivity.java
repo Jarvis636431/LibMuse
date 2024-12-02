@@ -603,10 +603,10 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void updateEeg() {//实时更新EEG的值
-        TextView tp9 = findViewById(R.id.eeg_tp9);
-        TextView fp1 = findViewById(R.id.eeg_af7);
-        TextView fp2 = findViewById(R.id.eeg_af8);
-        TextView tp10 = findViewById(R.id.eeg_tp10);
+        TextView tp9 = findViewById(R.id.eeg_tp9);//左后
+        TextView fp1 = findViewById(R.id.eeg_af7);//左前
+        TextView fp2 = findViewById(R.id.eeg_af8);//右前
+        TextView tp10 = findViewById(R.id.eeg_tp10);//右后
         tp9.setText(String.format(Locale.getDefault(), "%6.2f", eegBuffer[0]));
         fp1.setText(String.format(Locale.getDefault(), "%6.2f", eegBuffer[1]));
         fp2.setText(String.format(Locale.getDefault(), "%6.2f", eegBuffer[2]));
@@ -682,6 +682,10 @@ public class MainActivity extends Activity implements OnClickListener {
         File file = new File(dir, "eeg_data.raw");
         if (file.exists() && !file.delete()) {
             Log.e(TAG, "file not successfully deleted");
+        }
+        File fftEegFile = new File(dir, "fft_eeg_data.raw");
+        if (fftEegFile.exists() && !fftEegFile.delete()) {
+            Log.e(TAG, "fft_eeg_data.raw file not successfully deleted");
         }
     }
 
