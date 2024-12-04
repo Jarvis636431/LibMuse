@@ -58,6 +58,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.jtransforms.fft.DoubleFFT_1D;
+import com.choosemuse.example.libmuse.LowPassFilter;
 
 /**
  * This example will illustrate how to connect to a Muse headband,
@@ -211,10 +212,19 @@ public class MainActivity extends Activity implements OnClickListener {
         writeFftEegDataToRaw(data); // 将经过 FFT 处理的数据写入文件
     }
 
+    private double[] filteredEeg;
+    private LowPassFilter lpf;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        // 初始化 LowPassFilter 对象
+        lpf = new LowPassFilter(0.1, eegBuffer.length);
+        // 初始化 LowPassFilter 对象
+        filteredEeg = new double[eegBuffer.length];
 
         // We need to set the context on MuseManagerAndroid before we can do anything.
         // This must come before other LibMuse API calls as it also loads the library.
@@ -447,7 +457,10 @@ public class MainActivity extends Activity implements OnClickListener {
             case EEG:
                 getEegChannelValues(eegBuffer,p);
                 eegStale = true;
-                performFFT(eegBuffer); // 调用 FFT 方法
+                // 对 eegBuffer 进行滤波
+                filteredEeg = lpf.filter(eegBuffer);
+                // 调用 FFT 方法
+                performFFT(filteredEeg);
                 break;
             case ACCELEROMETER:
                 getAccelValues(p);
@@ -517,9 +530,6 @@ public class MainActivity extends Activity implements OnClickListener {
         buffer[2] = p.getEegChannelValue(Eeg.EEG3);
         buffer[3] = p.getEegChannelValue(Eeg.EEG4);
     }
-
-
-
 
     private void getAccelValues(MuseDataPacket p) {
         accelBuffer[0] = p.getAccelerometerValue(Accelerometer.X);
@@ -641,8 +651,6 @@ public class MainActivity extends Activity implements OnClickListener {
         focusText.setText(String.format(Locale.getDefault(), "%6.2f", attention));
         relaxText.setText(String.format(Locale.getDefault(), "%6.2f", relaxation));
     }
-
-
 
     //--------------------------------------
     // File I/O
@@ -850,3 +858,5 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 }
+
+
