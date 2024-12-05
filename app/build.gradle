@@ -28,7 +28,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation 'com.github.wendykierp:JTransforms:3.1'
-
 }
 
 
