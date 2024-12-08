@@ -50,6 +50,7 @@ import com.intretech.eegcalculation.XmuseEEGCalculation;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
@@ -304,7 +305,7 @@ public class MainActivity extends Activity implements OnClickListener {
             Spinner musesSpinner = findViewById(R.id.muses_spinner);
 
             // Check that we actually have something to connect to.
-            if (availableMuses.size() < 1 || musesSpinner.getAdapter().getCount() < 1) {
+            if (availableMuses.isEmpty() || musesSpinner.getAdapter().getCount() < 1) {
                 Log.w(TAG, "There is nothing to connect to");
             } else {
 
@@ -440,6 +441,21 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+
+    private void writeFilteredEegDataToRaw(double[] data) {
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir, "filtered_eeg_data.raw");
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            for (double value : data) {
+                fos.write(Double.toString(value).getBytes());
+                fos.write(" ".getBytes());
+            }
+            fos.write("\n".getBytes());
+        } catch (IOException e) {
+            Log.e(TAG, "Error writing filtered EEG data to raw file", e);
+        }
+    }
+
     /**
      * You will receive a callback to this method each time the headband sends a MuseDataPacket
      * that you have registered.  You can use different listeners for different packet types or
@@ -449,6 +465,7 @@ public class MainActivity extends Activity implements OnClickListener {
      */
     @SuppressWarnings("unused")
     public void receiveMuseDataPacket(final MuseDataPacket p, final Muse muse) {
+        //先把所有的原始数据写入.muse,其中选出原始EEG数据写入.raw文件
         writeDataPacketToFile(p);
         //安卓端返回的数据
         // valuesSize returns the number of data values contained in the packet.
@@ -459,8 +476,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 eegStale = true;
                 // 对 eegBuffer 进行滤波
                 filteredEeg = lpf.filter(eegBuffer);
-                // 调用 FFT 方法
+                System.out.println("filteredEeg: " + Arrays.toString(filteredEeg));
+                writeFilteredEegDataToRaw(filteredEeg);
+                // 对滤波后的数据进行 FFT
                 performFFT(filteredEeg);
+
+
                 break;
             case ACCELEROMETER:
                 getAccelValues(p);
@@ -682,7 +703,7 @@ public class MainActivity extends Activity implements OnClickListener {
     /**
      * Writes the provided MuseDataPacket to the file.  MuseFileWriter knows
      * how to write all packet types generated from LibMuse.
-     * @param p     The data packet to write.
+     * @param p The data packet to write.
      */
 
     private void initRawFile() {
@@ -694,6 +715,10 @@ public class MainActivity extends Activity implements OnClickListener {
         File fftEegFile = new File(dir, "fft_eeg_data.raw");
         if (fftEegFile.exists() && !fftEegFile.delete()) {
             Log.e(TAG, "fft_eeg_data.raw file not successfully deleted");
+        }
+        File filteredEegFile = new File(dir, "filtered_eeg_data.raw");
+        if (filteredEegFile.exists() && !filteredEegFile.delete()) {
+            Log.e(TAG, "filtered_eeg_data.raw file not successfully deleted");
         }
     }
 
