@@ -208,9 +208,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
     // 修改 performFFT 方法，在执行 FFT 后调用 writeFftEegDataToRaw
     private void performFFT(double[] data) {
-        DoubleFFT_1D fft = new DoubleFFT_1D(data.length);
-        fft.realForward(data);
-        writeFftEegDataToRaw(data); // 将经过 FFT 处理的数据写入文件
+        // 只取前四个元素，后两位是Nan？会影响计算
+        double[] fftData = Arrays.copyOfRange(data, 0, 4);
+        DoubleFFT_1D fft = new DoubleFFT_1D(fftData.length);
+        fft.realForward(fftData);
+        System.out.println("FFT Result: " + Arrays.toString(fftData)); // 打印 FFT 结果
+        writeFftEegDataToRaw(fftData); // 将经过 FFT 处理的数据写入文件
     }
 
     private double[] filteredEeg;
@@ -473,15 +476,13 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (p.packetType()) {
             case EEG:
                 getEegChannelValues(eegBuffer,p);
+//                System.out.println("EEG data: " + Arrays.toString(eegBuffer));
                 eegStale = true;
                 // 对 eegBuffer 进行滤波
                 filteredEeg = lpf.filter(eegBuffer);
-                System.out.println("filteredEeg: " + Arrays.toString(filteredEeg));
+//                System.out.println("Filtered EEG data: " + Arrays.toString(filteredEeg));
                 writeFilteredEegDataToRaw(filteredEeg);
-                // 对滤波后的数据进行 FFT
-                performFFT(filteredEeg);
-
-
+                performFFT(filteredEeg); // 对滤波后的数据进行 FFT
                 break;
             case ACCELEROMETER:
                 getAccelValues(p);
