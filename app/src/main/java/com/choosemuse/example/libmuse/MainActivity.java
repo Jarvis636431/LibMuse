@@ -50,6 +50,7 @@ import com.intretech.eegcalculation.XmuseEEGCalculation;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -189,7 +190,9 @@ public class MainActivity extends Activity implements OnClickListener {
     //--------------------------------------
     // Lifecycle / Connection code
 
+    private final List<double[]> fftDataList = new ArrayList<>();
 
+    private int fftDataCounter = 0;
     //计算FFT 使用JTransforms库
     // 添加此方法以将经过 FFT 处理的 EEG 数据写入一个单独的 raw 文件
     private void writeFftEegDataToRaw(double[] data) {
@@ -208,12 +211,17 @@ public class MainActivity extends Activity implements OnClickListener {
 
     // 修改 performFFT 方法，在执行 FFT 后调用 writeFftEegDataToRaw
     private void performFFT(double[] data) {
-        // 只取前四个元素，后两位是Nan？会影响计算
         double[] fftData = Arrays.copyOfRange(data, 0, 4);
         DoubleFFT_1D fft = new DoubleFFT_1D(fftData.length);
         fft.realForward(fftData);
-        System.out.println("FFT Result: " + Arrays.toString(fftData)); // 打印 FFT 结果
-        writeFftEegDataToRaw(fftData); // 将经过 FFT 处理的数据写入文件
+        System.out.println("FFT Result: " + Arrays.toString(fftData));
+        fftDataList.add(fftData); // 将 fftData 添加到全局列表中
+
+        fftDataCounter++;
+        if (fftDataCounter >= 256 * 3) {
+            writeFftEegDataToRaw(fftData); // 将经过 FFT 处理的数据写入文件
+            fftDataCounter = 0; // 重置计数器
+        }
     }
 
     private double[] filteredEeg;
