@@ -639,9 +639,6 @@ id FUNCTION
 id META
 id SHIFT
 id SYM
-id acc_x
-id acc_y
-id acc_z
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
 id accessibility_custom_action_1
@@ -731,7 +728,6 @@ id elem4
 id end
 id expand_activities_button
 id expanded_menu
-id focus1
 id forever
 id fragment_container_view_tag
 id group_divider
@@ -741,6 +737,7 @@ id icon
 id icon_group
 id ifRoom
 id image
+id imageView
 id info
 id italic
 id line1
@@ -765,7 +762,6 @@ id progress_circular
 id progress_horizontal
 id radio
 id refresh
-id relax
 id right_icon
 id right_side
 id screen
@@ -871,6 +867,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_ble_image_receive
 layout activity_main
 layout custom_dialog
 layout notification_action

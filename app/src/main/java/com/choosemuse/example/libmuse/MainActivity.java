@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.choosemuse.libmuse.Accelerometer;
 import com.choosemuse.libmuse.AnnotationData;
@@ -226,12 +227,21 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private double[] filteredEeg;
     private LowPassFilter lpf;
+//    private BluetoothManagerHelper bluetoothManagerHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        // 获取 ImageView
+//        ImageView imageView = findViewById(R.id.imageView);
+//
+//        // 初始化蓝牙管理助手
+//        bluetoothManagerHelper = new BluetoothManagerHelper(this, imageView);
+//
+//        // 开始扫描
+//        bluetoothManagerHelper.startScan();
 
         // 初始化 LowPassFilter 对象
         lpf = new LowPassFilter(0.1, eegBuffer.length);
@@ -570,12 +580,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
     //--------------------------------------
     // UI Specific methods
+    // UI 部分
 
     /**
      * Initializes the UI of the example application.
      */
     private void initUI() {
-        setContentView(R.layout.activity_main);
+//        初始化UI
+        setContentView(R.layout.activity_main);//找到对应的xml文件
         Button refreshButton = findViewById(R.id.refresh);
         refreshButton.setOnClickListener(this);
         Button connectButton = findViewById(R.id.connect);
@@ -588,9 +600,9 @@ public class MainActivity extends Activity implements OnClickListener {
         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         Spinner musesSpinner = findViewById(R.id.muses_spinner);
         musesSpinner.setAdapter(spinnerAdapter);
-
-        focusText = findViewById(R.id.focus1);
-        relaxText = findViewById(R.id.relax);
+//专注力与放松度
+//        focusText = findViewById(R.id.focus1);
+//        relaxText = findViewById(R.id.relax);
     }
 
     /**
@@ -608,9 +620,10 @@ public class MainActivity extends Activity implements OnClickListener {
             if (eegStale) {
                 updateEeg();
             }
-            if (accelStale) {
-                updateAccel();
-            }
+//            更新加速度
+//            if (accelStale) {
+//                updateAccel();
+//            }
             if (alphaStale) {
                 updateAlpha();
             }
@@ -633,14 +646,14 @@ public class MainActivity extends Activity implements OnClickListener {
      * from the buffers.
      * 在UI中更新数据
      */
-    private void updateAccel() {//实时更新加速度的值
-        TextView acc_x = findViewById(R.id.acc_x);
-        TextView acc_y = findViewById(R.id.acc_y);
-        TextView acc_z = findViewById(R.id.acc_z);
-        acc_x.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[0]));
-        acc_y.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[1]));
-        acc_z.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[2]));
-    }
+//    private void updateAccel() {//实时更新加速度的值
+//        TextView acc_x = findViewById(R.id.acc_x);
+//        TextView acc_y = findViewById(R.id.acc_y);
+//        TextView acc_z = findViewById(R.id.acc_z);
+//        acc_x.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[0]));
+//        acc_y.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[1]));
+//        acc_z.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[2]));
+//    }
 
     private void updateEeg() {//实时更新EEG的值
         TextView tp9 = findViewById(R.id.eeg_tp9);//左后

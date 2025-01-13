@@ -1,26 +1,34 @@
 [
     {
-        "merged": "com.choosemuse.example.libmuse.app-debug-20:/drawable-xhdpi_ic_launcher.png.flat",
-        "source": "com.choosemuse.example.libmuse.app-main-22:/drawable-xhdpi/ic_launcher.png"
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\drawable-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\drawable-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "com.choosemuse.example.libmuse.app-debug-20:/drawable-mdpi_ic_launcher.png.flat",
-        "source": "com.choosemuse.example.libmuse.app-main-22:/drawable-mdpi/ic_launcher.png"
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.choosemuse.example.libmuse.app-debug-20:/drawable-xxhdpi_ic_launcher.png.flat",
-        "source": "com.choosemuse.example.libmuse.app-main-22:/drawable-xxhdpi/ic_launcher.png"
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\drawable-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\drawable-xhdpi\\ic_launcher.png"
     },
     {
-        "merged": "com.choosemuse.example.libmuse.app-debug-20:/menu_main.xml.flat",
-        "source": "com.choosemuse.example.libmuse.app-main-22:/menu/main.xml"
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\layout_activity_ble_image_receive.xml.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\layout\\activity_ble_image_receive.xml"
     },
     {
-        "merged": "com.choosemuse.example.libmuse.app-debug-20:/drawable-hdpi_ic_launcher.png.flat",
-        "source": "com.choosemuse.example.libmuse.app-main-22:/drawable-hdpi/ic_launcher.png"
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\drawable-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\menu_main.xml.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\menu\\main.xml"
     },
     {
         "merged": "com.choosemuse.example.libmuse.app-debug-20:/layout_activity_main.xml.flat",
         "source": "com.choosemuse.example.libmuse.app-main-22:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\drawable-xxhdpi\\ic_launcher.png"
     }
 ]

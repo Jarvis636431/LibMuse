@@ -4,7 +4,7 @@
     <string name="action_settings">设置</string>
     <string name="connect">连接</string>
     <string name="status">状态</string>
-    <string name="disconnect">取消连接</string>
+    <string name="disconnect">断开</string>
     <string name="refresh">刷新</string>
     <string name="init_val">0.0</string>
     <string name="eeg">EEG 数据</string>
