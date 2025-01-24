@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-46:12
-INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-46:12
-INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-46:12
-INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-46:12
+ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:2:1-49:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\86151\.gradle\caches\transforms-3\e33983eb3782fa4485ad2a367dd74ec0\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\86151\.gradle\caches\transforms-3\4e74271b91caa4a1d0154601ccfdb8a4\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\86151\.gradle\caches\transforms-3\aca02749848556b4defae276470921a8\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
@@ -81,8 +81,8 @@ ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndr
 	android:name
 		ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:24:9-63
 application
-ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:29:5-44:19
-INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:29:5-44:19
+ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:29:5-47:19
+INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:29:5-47:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\86151\.gradle\caches\transforms-3\559bbe704465ab7fd00186a828a98a44\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.core:core:1.9.0] C:\Users\86151\.gradle\caches\transforms-3\c6785632068e46fbd453bb286dec771b\transformed\core-1.9.0\AndroidManifest.xml:28:5-89
@@ -123,6 +123,12 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:41:17-77
 	android:name
 		ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:41:27-74
+activity#com.choosemuse.example.libmuse.BLEImageReceiverActivity
+ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:44:9-45:73
+	android:theme
+		ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:45:13-71
+	android:name
+		ADDED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml:44:19-59
 uses-sdk
 INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\86151\Desktop\libmuse_android_7.2.1\examples\TestLibMuseAndroid\app\src\main\AndroidManifest.xml

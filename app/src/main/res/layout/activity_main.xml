@@ -32,7 +32,7 @@
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
-		android:layout_height="20dp">
+		android:layout_height="100dp">
 		<TextView
 		android:layout_width="100dp"
 		android:layout_height="match_parent"
@@ -50,50 +50,22 @@
 <!--	显示连接状态-->
 
 
-<!--	<TextView-->
-<!--		android:layout_width="match_parent"-->
-<!--		android:layout_height="match_parent"-->
-<!--		android:layout_weight="1"-->
-<!--		android:textSize="16sp"-->
-<!--		android:text="专注力 - 放松度" />-->
-<!--	<LinearLayout-->
-<!--		android:layout_width="match_parent"-->
-<!--		android:layout_height="match_parent"-->
-<!--		android:layout_weight="1"-->
-<!--		android:orientation="horizontal" >-->
-<!--		<TextView-->
-<!--			android:id="@+id/focus1"-->
-<!--			android:layout_width="match_parent"-->
-<!--			android:layout_height="match_parent"-->
-<!--			android:layout_weight="1"-->
-<!--			android:textSize="16sp"-->
-<!--			android:text="@string/init_val" />-->
-<!--		<TextView-->
-<!--			android:id="@+id/relax"-->
-<!--			android:layout_width="match_parent"-->
-<!--			android:layout_height="match_parent"-->
-<!--			android:layout_weight="1"-->
-<!--			android:textSize="16sp"-->
-<!--			android:text="@string/init_val" />-->
-
-<!--	</LinearLayout>-->
-
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:textSize="16sp"
         android:text="@string/eeg" />
 	<LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal" >
 
 		<TextView
 			android:id="@+id/eeg_tp9"
 			android:layout_width="match_parent"
-			android:layout_height="20dp"
+			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:text="@string/init_val"
 			android:textSize="16sp" />
@@ -101,7 +73,7 @@
 		<TextView
 			android:id="@+id/eeg_af7"
 			android:layout_width="match_parent"
-			android:layout_height="20dp"
+			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/init_val"
 			android:textSize="16sp" />
@@ -121,86 +93,14 @@
 	        android:textSize="16sp"
 	        android:text="@string/init_val" />
     </LinearLayout>
-<!--	更新加速度-->
-<!--    <TextView-->
-<!--   		android:layout_width="match_parent"-->
-<!--    	android:layout_height="match_parent"-->
-<!--    	android:layout_weight="1"-->
-<!--    	android:textSize="16sp"-->
-<!--    	android:text="@string/accel" />-->
-<!--    <LinearLayout-->
-<!--	        android:layout_width="match_parent"-->
-<!--	        android:layout_height="match_parent"-->
-<!--	        android:layout_weight="1"-->
-<!--	        android:orientation="horizontal" >-->
-<!--	        <TextView-->
-<!--	            android:id="@+id/acc_x"-->
-<!--		        android:layout_width="match_parent"-->
-<!--		        android:layout_height="match_parent"-->
-<!--		        android:layout_weight="1"-->
-<!--		        android:textSize="16sp"-->
-<!--		        android:text="@string/init_val" />-->
-<!--	        <TextView-->
-<!--	            android:id="@+id/acc_y"-->
-<!--		        android:layout_width="match_parent"-->
-<!--		        android:layout_height="match_parent"-->
-<!--		        android:layout_weight="1"-->
-<!--		        android:textSize="16sp"-->
-<!--		        android:text="@string/init_val" />-->
-<!--	        <TextView-->
-<!--	            android:id="@+id/acc_z"-->
-<!--		        android:layout_width="match_parent"-->
-<!--		        android:layout_height="match_parent"-->
-<!--		        android:layout_weight="1"-->
-<!--		        android:textSize="16sp"-->
-<!--		        android:text="@string/init_val" />-->
-<!--   		 </LinearLayout>-->
+
 	<TextView
-	   		android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:layout_weight="1"
-	    	android:textSize="16sp"
-	    	android:text="@string/muse_elem" />
-	<LinearLayout
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-        	android:layout_weight="1"
-        	android:orientation="horizontal" >
-	        <TextView
-	            android:id="@+id/elem1"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:textSize="16sp"
-		        android:text="@string/init_val" />
-	        <TextView
-	            android:id="@+id/elem2"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:textSize="16sp"
-		        android:text="@string/init_val" />
-	        <TextView
-	            android:id="@+id/elem3"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:textSize="16sp"
-		        android:text="@string/init_val" />
-	        <TextView
-	            android:id="@+id/elem4"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:textSize="16sp"
-		        android:text="@string/init_val" />
-	    </LinearLayout>
-	<TextView
-	   		android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:layout_weight="1"
-	    	android:textSize="16sp"
-	    	android:text="@string/version" />
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:text="@string/version"
+		android:textSize="16sp" />
+
 	<TextView
    	        android:id="@+id/version"
 	   		android:layout_width="match_parent"
@@ -217,6 +117,11 @@
 	            android:layout_width="150dp"
 	            android:layout_height="40dp"
 	            android:text="@string/pause" />
+		<Button
+			android:id="@+id/ble_image_receive"
+			android:layout_width="150dp"
+			android:layout_height="40dp"
+			android:text="BLE Image" />
 		</LinearLayout>
 
 </LinearLayout>

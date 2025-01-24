@@ -1,14 +1,10 @@
-/*
- * Example of using libmuse library on android.
- * Interaxon, Inc. 2016
- */
-
 package com.choosemuse.example.libmuse;
 
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,136 +59,28 @@ import java.io.IOException;
 import org.jtransforms.fft.DoubleFFT_1D;
 import com.choosemuse.example.libmuse.LowPassFilter;
 
-/**
- * This example will illustrate how to connect to a Muse headband,
- * register for and receive EEG data and disconnect from the headband.
- * Saving EEG data to a .muse file is also covered.
- *
- * Usage instructions:
- * 1. Pair your headband if necessary.
- * 2. Run this project.
- * 3. Turn on the Muse headband.
- * 4. Press "Refresh". It should display all paired Muses in the Spinner drop down at the
- *    top of the screen.  It may take a few seconds for the headband to be detected.
- * 5. Select the headband you want to connect to and press "Connect".
- * 6. You should see EEG and accelerometer data as well as connection status,
- *    version information and relative alpha values appear on the screen.
- * 7. You can pause/resume data transmission with the button at the bottom of the screen.
- * 8. To disconnect from the headband, press "Disconnect"
- */
+
 public class MainActivity extends Activity implements OnClickListener {
 
-    /**
-     * Tag used for logging purposes.
-     */
     private final String TAG = "TestLibMuseAndroid";
-
-    /**
-     * The MuseManager is how you detect Muse headbands and receive notifications
-     * when the list of available headbands changes.
-     */
     private MuseManagerAndroid manager;
-
-    /**
-     * A Muse refers to a Muse headband.  Use this to connect/disconnect from the
-     * headband, register listeners to receive EEG data and get headband
-     * configuration and version information.
-     */
     private Muse muse;
-
-    /**
-     * The ConnectionListener will be notified whenever there is a change in
-     * the connection state of a headband, for example when the headband connects
-     * or disconnects.
-     *
-     * Note that ConnectionListener is an inner class at the bottom of this file
-     * that extends MuseConnectionListener.
-     */
     private ConnectionListener connectionListener;
-
-    /**
-     * The DataListener is how you will receive EEG (and other) data from the
-     * headband.
-     *
-     * Note that DataListener is an inner class at the bottom of this file
-     * that extends MuseDataListener.
-     */
     private DataListener  dataListener;
-
-    /**
-     * Data comes in from the headband at a very fast rate; 220Hz, 256Hz or 500Hz,
-     * depending on the type of headband and the preset configuration.  We buffer the
-     * data that is read until we can update the UI.
-     *
-     * The stale flags indicate whether or not new data has been received and the buffers
-     * hold the values of the last data packet received.  We are displaying the EEG, ALPHA_RELATIVE
-     * and ACCELEROMETER values in this example.
-     *
-     * Note: the array lengths of the buffers are taken from the comments in
-     * MuseDataPacketType, which specify 3 values for accelerometer and 6
-     * values for EEG and EEG-derived packets.
-     */
     private final double[] eegBuffer = new double[6];
     private boolean eegStale;
-    private final double[] alphaBuffer = new double[6];
-    private boolean alphaStale;
-
-    private final double[] betaBuffer = new double[6];//β波的相对值
-    private boolean betaStale;       //现有的β数据是否需要更新
-
-    private final double[] thetaBuffer = new double[6];//θ波的相对值
-    private boolean thetaStale;//现有的θ数据是否需要更新
-
-    private int electrode_num = 4;//muse的电极数量
-
-    private final double[] hsi = new double[4]; //muse四个电极佩戴的贴合度
-    private boolean hsiStale;
-
-    private final double[] accelBuffer = new double[3];
-    private boolean accelStale;
-
-    private TextView focusText;
-    private TextView relaxText;
-    /**
-     * We will be updating the UI using a handler instead of in packet handlers because
-     * packets come in at a very high frequency and it only makes sense to update the UI
-     * at about 60fps. The update functions do some string allocation, so this reduces our memory
-     * footprint and makes GC pauses less frequent/noticeable.
-     */
+    private final int electrode_num = 4;//muse的电极数量
     private Handler handler;
-
-    /**
-     * In the UI, the list of Muses you can connect to is displayed in a Spinner object for this example.
-     * This spinner adapter contains the MAC addresses of all of the headbands we have discovered.
-     */
     private ArrayAdapter<String> spinnerAdapter;
-
-    /**
-     * It is possible to pause the data transmission from the headband.  This boolean tracks whether
-     * or not the data transmission is enabled as we allow the user to pause transmission in the UI.
-     */
     private boolean dataTransmission = true;
-
-    /**
-     * To save data to a file, you should use a MuseFileWriter.  The MuseFileWriter knows how to
-     * serialize the data packets received from the headband into a compact binary format.
-     * To read the file back, you would use a MuseFileReader.
-     */
     private final AtomicReference<MuseFileWriter> fileWriter = new AtomicReference<>();
-
-    /**
-     * We don't want file operations to slow down the UI, so we will defer those file operations
-     * to a handler on a separate thread.
-     */
     private final AtomicReference<Handler> fileHandler = new AtomicReference<>();
-
     private final static int REQUEST_PERMISSIONS = 0x123;
 
     //--------------------------------------
     // Lifecycle / Connection code
 
     private final List<double[]> fftDataList = new ArrayList<>();
-
     private int fftDataCounter = 0;
     //计算FFT 使用JTransforms库
     // 添加此方法以将经过 FFT 处理的 EEG 数据写入一个单独的 raw 文件
@@ -227,29 +115,19 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private double[] filteredEeg;
     private LowPassFilter lpf;
-//    private BluetoothManagerHelper bluetoothManagerHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        // 获取 ImageView
-//        ImageView imageView = findViewById(R.id.imageView);
-//
-//        // 初始化蓝牙管理助手
-//        bluetoothManagerHelper = new BluetoothManagerHelper(this, imageView);
-//
-//        // 开始扫描
-//        bluetoothManagerHelper.startScan();
 
         // 初始化 LowPassFilter 对象
         lpf = new LowPassFilter(0.1, eegBuffer.length);
         // 初始化 LowPassFilter 对象
         filteredEeg = new double[eegBuffer.length];
 
-        // We need to set the context on MuseManagerAndroid before we can do anything.
-        // This must come before other LibMuse API calls as it also loads the library.
+        //初始化 MuseManagerAndroid，用于管理 Muse 设备
         manager = MuseManagerAndroid.getInstance();
         manager.setContext(this);
 
@@ -257,36 +135,29 @@ public class MainActivity extends Activity implements OnClickListener {
 
         WeakReference<MainActivity> weakActivity =
                 new WeakReference<>(this);
-        // Register a listener to receive connection state changes.
+        //注册 Muse 的连接监听器和数据监听器，用于接收 Muse 设备的连接状态和数据
         connectionListener = new ConnectionListener(weakActivity);
-        // Register a listener to receive data from a Muse.
         dataListener = new DataListener(weakActivity);
-        // Register a listener to receive notifications of what Muse headbands
-        // we can connect to.
+        //设置 MuseListener，用于接收 Muse 设备的连接状态
         manager.setMuseListener(new MuseL(weakActivity));
 
-        // Muse headbands use Bluetooth Low Energy technology to simplify the
-        // connection process. Make sure we have required permissions before
-        // proceeding.
+        //检查蓝牙BLE权限
         checkPermissionState();
 
-        // Load and initialize our UI.
+        // 加载并初始化UI.
         initUI();
         initRawFile();
 
-        // Start up a thread for asynchronous file operations.
-        // This is only needed if you want to do File I/O.
+        //独立的线程，用于文件读写
         fileThread.start();
 
-        // Start our asynchronous updates of the UI.
+        //初始化Handler
         handler = new Handler(getMainLooper());
         handler.post(tickUi);
     }
 
     protected void onPause() {
         super.onPause();
-        // It is important to call stopListening when the Activity is paused
-        // to avoid a resource leak from the LibMuse library.
         manager.stopListening();
     }
 
@@ -302,40 +173,31 @@ public class MainActivity extends Activity implements OnClickListener {
         return false;
     }
 
+//    点击事件的确定，包括刷新，连接，断开，暂停
     @Override
     public void onClick(View v) {
 
+        if (v.getId() == R.id.ble_image_receive) {
+            Intent bleIntent = new Intent(this, BLEImageReceiverActivity.class);
+            startActivity(bleIntent);
+        }
+
         if (v.getId() == R.id.refresh) {
-            // The user has pressed the "Refresh" button.
-            // Start listening for nearby or paired Muse headbands. We call stopListening
-            // first to make sure startListening will clear the list of headbands and start fresh.
             manager.stopListening();
             manager.startListening();
 
         } else if (v.getId() == R.id.connect) {
 
-            // The user has pressed the "Connect" button to connect to
-            // the headband in the spinner.
-
-            // Listening is an expensive operation, so now that we know
-            // which headband the user wants to connect to we can stop
-            // listening for other headbands.
             manager.stopListening();
 
             List<Muse> availableMuses = manager.getMuses();
             Spinner musesSpinner = findViewById(R.id.muses_spinner);
 
-            // Check that we actually have something to connect to.
             if (availableMuses.isEmpty() || musesSpinner.getAdapter().getCount() < 1) {
                 Log.w(TAG, "There is nothing to connect to");
             } else {
 
-                // Cache the Muse that the user has selected.
                 muse = availableMuses.get(musesSpinner.getSelectedItemPosition());
-                // Unregister all prior listeners and register our data listener to
-                // receive the MuseDataPacketTypes we are interested in.  If you do
-                // not register a listener for a particular data type, you will not
-                // receive data packets of that type.
                 muse.unregisterAllListeners();
                 muse.registerConnectionListener(connectionListener);
                 muse.registerDataListener(dataListener, MuseDataPacketType.EEG);
@@ -348,23 +210,17 @@ public class MainActivity extends Activity implements OnClickListener {
                 muse.registerDataListener(dataListener, MuseDataPacketType.DRL_REF);
                 muse.registerDataListener(dataListener, MuseDataPacketType.QUANTIZATION);
 
-                // Initiate a connection to the headband and stream the data asynchronously.
                 muse.runAsynchronously();
             }
 
         } else if (v.getId() == R.id.disconnect) {
 
-            // The user has pressed the "Disconnect" button.
-            // Disconnect from the selected Muse.
             if (muse != null) {
                 muse.disconnect();
             }
 
         } else if (v.getId() == R.id.pause) {
 
-            // The user has pressed the "Pause/Resume" button to either pause or
-            // resume data transmission.  Toggle the state and pause or resume the
-            // transmission on the headband.
             if (muse != null) {
                 dataTransmission = !dataTransmission;
                 muse.enableDataTransmission(dataTransmission);
@@ -372,8 +228,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    //--------------------------------------
-    // Permissions
+//    权限检查
 
     private void checkPermissionState() {
         String[] permissions;
@@ -403,13 +258,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    //--------------------------------------
-    // Listeners
-
-    /**
-     * You will receive a callback to this method each time a headband is discovered.
-     * In this example, we update the spinner with the MAC address of the headband.
-     */
+//  监听Muse的连接状态
     public void museListChanged() {
         final List<Muse> list = manager.getMuses();
         spinnerAdapter.clear();
@@ -418,12 +267,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /**
-     * You will receive a callback to this method each time there is a change to the
-     * connection state of one of the headbands.
-     * @param p     A packet containing the current and prior connection states
-     * @param muse  The headband whose state changed.
-     */
+//    @SuppressWarnings("unused")
     public void receiveMuseConnectionPacket(final MuseConnectionPacket p, final Muse muse) {
 
         final ConnectionState current = p.getCurrentConnectionState();
@@ -440,9 +284,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
             final MuseVersion museVersion = muse.getMuseVersion();
             final TextView museVersionText = findViewById(R.id.version);
-            // If we haven't yet connected to the headband, the version information
-            // will be null.  You have to connect to the headband before either the
-            // MuseVersion or MuseConfiguration information is known.
             if (museVersion != null) {
                 final String version = museVersion.getFirmwareType() + " - "
                         + museVersion.getFirmwareVersion() + " - "
@@ -455,9 +296,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         if (current == ConnectionState.DISCONNECTED) {
             Log.i(TAG, "Muse disconnected:" + muse.getName());
-            // Save the data file once streaming has stopped.
             saveFile();
-            // We have disconnected from the headband, so set our cached copy to null.
             this.muse = null;
         }
     }
@@ -477,13 +316,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /**
-     * You will receive a callback to this method each time the headband sends a MuseDataPacket
-     * that you have registered.  You can use different listeners for different packet types or
-     * a single listener for all packet types as we have done here.
-     * @param p     The data packet containing the data from the headband (eg. EEG data)
-     * @param muse  The headband that sent the information.
-     */
     @SuppressWarnings("unused")
     public void receiveMuseDataPacket(final MuseDataPacket p, final Muse muse) {
         //先把所有的原始数据写入.muse,其中选出原始EEG数据写入.raw文件
@@ -502,27 +334,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 writeFilteredEegDataToRaw(filteredEeg);
                 performFFT(filteredEeg); // 对滤波后的数据进行 FFT
                 break;
-            case ACCELEROMETER:
-                getAccelValues(p);
-                accelStale = true;
-                break;
-            case ALPHA_RELATIVE:
-                getEegChannelValues(alphaBuffer,p);
-                alphaStale = true;
-                break;
-            case BETA_RELATIVE:
-                getEegChannelValues(betaBuffer,p);
-                betaStale = true;
-                break;
-            case THETA_RELATIVE:
-                thetaStale = true;
-                getEegChannelValues(thetaBuffer ,p);
-                break;
-            case HSI_PRECISION:
-                hsiStale = true;
-                getEegHsiValues(hsi,p);
 
-                break;
             case BATTERY:
             case DRL_REF:
             case QUANTIZATION:
@@ -532,28 +344,12 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
 
-    /**
-     * You will receive a callback to this method each time an artifact packet is generated if you
-     * have registered for the ARTIFACTS data type.  MuseArtifactPackets are generated when
-     * eye blinks are detected, the jaw is clenched and when the headband is put on or removed.
-     * @param p     The artifact packet with the data from the headband.
-     * @param muse  The headband that sent the information.
-     */
     @SuppressWarnings("unused")
     public void receiveMuseArtifactPacket(final MuseArtifactPacket p, final Muse muse) {
     }
 
-    /**
-     * Helper methods to get different packet values.  These methods simply store the
-     * data in the buffers for later display in the UI.
-     *
-     * getEegChannelValue can be used for any EEG or EEG derived data packet type
-     * such as EEG, ALPHA_ABSOLUTE, ALPHA_RELATIVE or HSI_PRECISION.  See the documentation
-     * of MuseDataPacketType for all of the available values.
-     * Specific packet types like ACCELEROMETER, GYRO, BATTERY and DRL_REF have their own
-     * getValue methods.
-     *
-     */
+    //定义一个方法，可以获得EEG数据中的前4组数据，从而得到4个电极的佩戴情况。
+
     private void getEegChannelValues(double[] buffer, MuseDataPacket p) {
         buffer[0] = p.getEegChannelValue(Eeg.EEG1);
         buffer[1] = p.getEegChannelValue(Eeg.EEG2);
@@ -563,31 +359,16 @@ public class MainActivity extends Activity implements OnClickListener {
         buffer[5] = p.getEegChannelValue(Eeg.AUX_RIGHT);
     }
 
-    //定义一个方法，可以获得EEG数据中的前4组数据，从而得到4个电极的佩戴情况。
-    private void getEegHsiValues(double[] buffer, MuseDataPacket p) {
-        buffer[0] = p.getEegChannelValue(Eeg.EEG1);
-        buffer[1] = p.getEegChannelValue(Eeg.EEG2);
-        buffer[2] = p.getEegChannelValue(Eeg.EEG3);
-        buffer[3] = p.getEegChannelValue(Eeg.EEG4);
-    }
-
-    private void getAccelValues(MuseDataPacket p) {
-        accelBuffer[0] = p.getAccelerometerValue(Accelerometer.X);
-        accelBuffer[1] = p.getAccelerometerValue(Accelerometer.Y);
-        accelBuffer[2] = p.getAccelerometerValue(Accelerometer.Z);
-    }
 
 
-    //--------------------------------------
-    // UI Specific methods
-    // UI 部分
 
-    /**
-     * Initializes the UI of the example application.
-     */
+//  UI 部分
+
     private void initUI() {
-//        初始化UI
+
         setContentView(R.layout.activity_main);//找到对应的xml文件
+        Button bleImageReceiveButton = findViewById(R.id.ble_image_receive);
+        bleImageReceiveButton.setOnClickListener(this);
         Button refreshButton = findViewById(R.id.refresh);
         refreshButton.setOnClickListener(this);
         Button connectButton = findViewById(R.id.connect);
@@ -600,60 +381,17 @@ public class MainActivity extends Activity implements OnClickListener {
         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         Spinner musesSpinner = findViewById(R.id.muses_spinner);
         musesSpinner.setAdapter(spinnerAdapter);
-//专注力与放松度
-//        focusText = findViewById(R.id.focus1);
-//        relaxText = findViewById(R.id.relax);
     }
 
-    /**
-     * The runnable that is used to update the UI at 60Hz.
-     *
-     * We update the UI from this Runnable instead of in packet handlers
-     * because packets come in at high frequency -- 220Hz or more for raw EEG
-     * -- and it only makes sense to update the UI at about 60fps. The update
-     * functions do some string allocation, so this reduces our memory
-     * footprint and makes GC pauses less frequent/noticeable.
-     */
     private final Runnable tickUi = new Runnable() {
         @Override
         public void run() {
             if (eegStale) {
                 updateEeg();
             }
-//            更新加速度
-//            if (accelStale) {
-//                updateAccel();
-//            }
-            if (alphaStale) {
-                updateAlpha();
-            }
-            if (betaStale){
-                updateBeta();//可做可视化拓展
-            }
-            if (thetaStale){
-                updateTheta();
-                updateFocus();//更新注意力的值
-            }
-            if (hsiStale){
-
-            }
             handler.postDelayed(tickUi, 1000 / 60);//每隔16.67s，重复执行这个任务
         }
     };
-
-    /**
-     * The following methods update the TextViews in the UI with the data
-     * from the buffers.
-     * 在UI中更新数据
-     */
-//    private void updateAccel() {//实时更新加速度的值
-//        TextView acc_x = findViewById(R.id.acc_x);
-//        TextView acc_y = findViewById(R.id.acc_y);
-//        TextView acc_z = findViewById(R.id.acc_z);
-//        acc_x.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[0]));
-//        acc_y.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[1]));
-//        acc_z.setText(String.format(Locale.getDefault(), "%6.2f", accelBuffer[2]));
-//    }
 
     private void updateEeg() {//实时更新EEG的值
         TextView tp9 = findViewById(R.id.eeg_tp9);//左后
@@ -666,42 +404,7 @@ public class MainActivity extends Activity implements OnClickListener {
         tp10.setText(String.format(Locale.getDefault(), "%6.2f", eegBuffer[3]));
     }
 
-    private void updateAlpha() {//实时更新α的值
-        TextView elem1 = findViewById(R.id.elem1);
-        elem1.setText(String.format(Locale.getDefault(), "%6.2f", alphaBuffer[0]));
-        TextView elem2 = findViewById(R.id.elem2);
-        elem2.setText(String.format(Locale.getDefault(), "%6.2f", alphaBuffer[1]));
-        TextView elem3 = findViewById(R.id.elem3);
-        elem3.setText(String.format(Locale.getDefault(), "%6.2f", alphaBuffer[2]));
-        TextView elem4 = findViewById(R.id.elem4);
-        elem4.setText(String.format(Locale.getDefault(), "%6.2f", alphaBuffer[3]));
-    }
-
-    private void  updateBeta(){
-     //可做拓展开发
-    }
-    private void  updateTheta(){
-    //可做拓展开发
-    }
-
-    //更新专注力和放松度参数
-    public void updateFocus() {
-        XmuseEEGCalculation calculation = XmuseEEGCalculation.getInstance();//调用Xmuse计算专注力和放松度的方法
-        double[]  result_att = calculation.getAttentionValue(alphaBuffer,betaBuffer,thetaBuffer,hsi,electrode_num);
-        double attention = result_att[0];//获取专注力的值
-        double[]  result_relax = calculation.getRelaxValue(alphaBuffer,betaBuffer,thetaBuffer,hsi,electrode_num);
-        double relaxation = result_relax[0];//获取放松度的值
-        focusText.setText(String.format(Locale.getDefault(), "%6.2f", attention));
-        relaxText.setText(String.format(Locale.getDefault(), "%6.2f", relaxation));
-    }
-
-    //--------------------------------------
-    // File I/O
-
-    /**
-     * We don't want to block the UI thread while we write to a file, so the file
-     * writing is moved to a separate thread.
-     */
+// 文件读写部分
 
     private final Thread fileThread = new Thread() {
         @Override
@@ -721,12 +424,6 @@ public class MainActivity extends Activity implements OnClickListener {
             Looper.loop();
         }
     };
-
-    /**
-     * Writes the provided MuseDataPacket to the file.  MuseFileWriter knows
-     * how to write all packet types generated from LibMuse.
-     * @param p The data packet to write.
-     */
 
     private void initRawFile() {
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
@@ -769,9 +466,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /**
-     * Flushes all the data to the file and closes the file writer.
-     */
     private void saveFile() {
         Handler h = fileHandler.get();
         if (h != null) {
@@ -788,79 +482,9 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /**
-     * Reads the provided .muse file and prints the data to the logcat.
-     * @param name  The name of the file to read.  The file in this example
-     *              is assumed to be in the Environment.DIRECTORY_DOWNLOADS
-     *              directory.
-     */
+
     @SuppressWarnings("unused")
-    private void playMuseFile(String name) {
-
-        File dir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(dir, name);
-
-        final String tag = "Muse File Reader";
-
-        if (!file.exists()) {
-            Log.w(tag, "file doesn't exist");
-            return;
-        }
-
-        MuseFileReader fileReader = MuseFileFactory.getMuseFileReader(file);
-
-        // Loop through each message in the file.  gotoNextMessage will read the next message
-        // and return the result of the read operation as a Result.
-        Result res = fileReader.gotoNextMessage();
-        while (res.getLevel() == ResultLevel.R_INFO && !res.getInfo().contains("EOF")) {
-
-            MessageType type = fileReader.getMessageType();
-            int id = fileReader.getMessageId();
-            long timestamp = fileReader.getMessageTimestamp();
-
-            Log.i(tag, "type: " + type.toString() +
-                  " id: " + id +
-                  " timestamp: " + timestamp);
-
-            switch(type) {
-                // EEG messages contain raw EEG data or DRL/REF data.
-                // EEG derived packets like ALPHA_RELATIVE and artifact packets
-                // are stored as MUSE_ELEMENTS messages.
-                case EEG:
-                case BATTERY:
-                case ACCELEROMETER:
-                case QUANTIZATION:
-                case GYRO:
-                case MUSE_ELEMENTS:
-                    MuseDataPacket packet = fileReader.getDataPacket();
-                    Log.i(tag, "data packet: " + packet.packetType().toString());
-                    break;
-                case VERSION:
-                    MuseVersion version = fileReader.getVersion();
-                    Log.i(tag, "version" + version.getFirmwareType());
-                    break;
-                case CONFIGURATION:
-                    MuseConfiguration config = fileReader.getConfiguration();
-                    Log.i(tag, "config" + config.getBluetoothMac());
-                    break;
-                case ANNOTATION:
-                    AnnotationData annotation = fileReader.getAnnotation();
-                    Log.i(tag, "annotation" + annotation.getData());
-                    break;
-                default:
-                    break;
-            }
-
-            // Read the next message.
-            res = fileReader.gotoNextMessage();
-        }
-    }
-
-    //--------------------------------------
-    // Listener translators
-    //
-    // Each of these classes extend from the appropriate listener and contain a weak reference
-    // to the activity.  Each class simply forwards the messages it receives back to the Activity.
+//    用于监听Muse的连接状态
     static class MuseL extends MuseListener {
         final WeakReference<MainActivity> activityRef;
 
@@ -876,11 +500,9 @@ public class MainActivity extends Activity implements OnClickListener {
  
     static class ConnectionListener extends MuseConnectionListener {
         final WeakReference<MainActivity> activityRef;
-
         ConnectionListener(final WeakReference<MainActivity> activityRef) {
             this.activityRef = activityRef;
         }
-
         @Override
         public void receiveMuseConnectionPacket(final MuseConnectionPacket p, final Muse muse) {
             activityRef.get().receiveMuseConnectionPacket(p, muse);
@@ -893,15 +515,12 @@ public class MainActivity extends Activity implements OnClickListener {
         DataListener(final WeakReference<MainActivity> activityRef) {
             this.activityRef = activityRef;
         }
-
-        @Override
-        public void receiveMuseDataPacket(final MuseDataPacket p, final Muse muse) {
-            activityRef.get().receiveMuseDataPacket(p, muse);
-        }
-
         @Override
         public void receiveMuseArtifactPacket(final MuseArtifactPacket p, final Muse muse) {
             activityRef.get().receiveMuseArtifactPacket(p, muse);
+        }
+        @Override
+        public void receiveMuseDataPacket(MuseDataPacket packet, Muse muse) {
         }
     }
 }

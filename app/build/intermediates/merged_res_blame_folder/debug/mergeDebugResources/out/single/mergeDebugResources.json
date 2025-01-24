@@ -28,6 +28,10 @@
         "source": "com.choosemuse.example.libmuse.app-main-22:/layout/activity_main.xml"
     },
     {
+        "merged": "com.choosemuse.example.libmuse.app-debug-20:/layout_activity_ble_image_receiver.xml.flat",
+        "source": "com.choosemuse.example.libmuse.app-main-22:/layout/activity_ble_image_receiver.xml"
+    },
+    {
         "merged": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-debug-20:\\drawable-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\86151\\.gradle\\daemon\\8.4\\com.choosemuse.example.libmuse.app-main-22:\\drawable-xxhdpi\\ic_launcher.png"
     }

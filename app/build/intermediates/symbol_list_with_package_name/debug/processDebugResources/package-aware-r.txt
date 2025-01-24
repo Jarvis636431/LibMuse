@@ -697,6 +697,7 @@ id alertTitle
 id always
 id async
 id beginning
+id ble_image_receive
 id blocking
 id bottom
 id buttonPanel
@@ -721,10 +722,6 @@ id eeg_af7
 id eeg_af8
 id eeg_tp10
 id eeg_tp9
-id elem1
-id elem2
-id elem3
-id elem4
 id end
 id expand_activities_button
 id expanded_menu
@@ -867,7 +864,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
-layout activity_ble_image_receive
+layout activity_ble_image_receiver
 layout activity_main
 layout custom_dialog
 layout notification_action
